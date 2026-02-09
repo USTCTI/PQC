@@ -1,0 +1,46 @@
+# Post-Quantum Cryptography Benchmark Configuration
+
+# Test Environment Meta-info (Optional, overwritten by auto-detection)
+environment:
+  platform: "Apple Silicon M4"
+
+# Test Execution Settings
+execution:
+  warmup_iterations: 100
+  long_run_duration_seconds: 3600  # 1 hour
+  enable_profiling: true
+  output_dir: "data"
+
+# Algorithm Selection and Parameters
+algorithms:
+  # Key Encapsulation Mechanisms
+  kem:
+    - name: "ML-KEM-512"
+      implementation: "pqcrypto" # or "dilithium-py" if available
+      payload_sizes: [64, 1024, 10240] # Bytes
+    - name: "ML-KEM-768"
+      implementation: "pqcrypto"
+      payload_sizes: [64, 1024]
+
+  # Digital Signatures
+  sign:
+    - name: "ML-DSA-44"
+      implementation: "pqcrypto"
+      message_sizes: [32, 64] # Hash sizes in bytes (e.g. 256-bit, 512-bit)
+    - name: "ML-DSA-65"
+      implementation: "pqcrypto"
+      message_sizes: [32, 64]
+    - name: "Falcon-512"
+      implementation: "pqcrypto"
+      message_sizes: [32, 64]
+    - name: "SPHINCS+-128s-simple"
+      implementation: "pqcrypto"
+      message_sizes: [32, 64]
+
+# Monitoring Settings
+monitoring:
+  sampling_interval_seconds: 1.0
+  metrics:
+    - cpu_percent
+    - memory_rss
+    - cpu_freq
